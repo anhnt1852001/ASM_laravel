@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoomFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\Room_service;
@@ -48,13 +49,18 @@ class RoomController extends Controller
         return view('admin.rooms.list', ['rooms' => $rooms,'services' => $services,  'searchData' => $searchData]);
     }
     public function remove($id){
-        $model=Room::find($id);
-        if(!$model){
+        $model = Room::find($id);
+        if (!$model) {
             return redirect()->back();
         }
-        Room_service::where('room_id',$id)->delete();
+        $path_image = 'storage/' . $model->image;
+        if (file_exists($path_image)) {
+            unlink($path_image);
+        }
+        Room_service::where('room_id', $id)->delete();
         $model->delete();
         return redirect()->back();
+
     }
 
 
@@ -63,7 +69,7 @@ class RoomController extends Controller
         return view('admin.rooms.add-form', ['services' =>$services]);
     }
 
-    public function saveAdd(Request $request){
+    public function saveAdd(RoomFormRequest $request){
         $model = new Room();
         $model->fill($request->all());
         // upload ảnh
@@ -91,15 +97,15 @@ class RoomController extends Controller
         $room_service = Room_service::where('room_id', $id)->get();
         return view('admin.rooms.edit-form', compact('room', 'services', 'room_service'));
     }
-    public function saveEdit($id, Request $request){
+    public function saveEdit($id, RoomFormRequest $request){
         $model = Room::find($id);
-        if(!$model){
-            return redirect()->back();
+        $path_image = 'storage/' . $model->image;
+        if (file_exists($path_image)) {
+            unlink($path_image);
         }
         $model->fill($request->all());
-        // upload ảnh
-        if($request->hasFile('uploadfile')){
-            $model->image = $request->file('uploadfile')->storeAs('uploads/rooms', uniqid() . '-' . $request->uploadfile->getClientOriginalName());
+        if ($request->hasFile('uploadfile')) {
+            $model->image  = $request->file('uploadfile')->storeAs('uploads/rooms', uniqid() . '-' . $request->uploadfile->getClientOriginalName());
         }
         $model->save();
         if ($request->service_id){

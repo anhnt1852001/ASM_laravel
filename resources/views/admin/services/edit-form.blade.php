@@ -8,15 +8,21 @@
                 <label for="">Tên Dịch vụ</label>
                 <input type="text" name="name" class="form-control" value="{{ $model->name }}">
             </div>
+            @error('name')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
         </div>
         <div class="col-6">
             <div class="add-product-preview-img">
-                <img src="{{ asset(''.$model->idon) }}" alt="">
+                <img src="{{asset('storage/' . $model->icon)}}" class="img-thumbnail">
             </div>
             <div class="form-group">
                 <label for="">Icon</label>
                 <input type="file" name="uploadfile" class="form-control">
             </div>
+            @error('uploadfile')
+                    <span class="text-danger">{{$message}}</span>
+            @enderror
         </div>
 
         <div class="text-right">

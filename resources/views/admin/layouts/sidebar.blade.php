@@ -48,6 +48,13 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('user.index') }}" class="nav-link">
+              <p>
+                User
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

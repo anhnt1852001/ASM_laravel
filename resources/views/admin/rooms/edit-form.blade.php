@@ -23,14 +23,23 @@
                 <label for="">Tên Room</label>
                 <input type="text" name="room_no" class="form-control" value="{{ $room->room_no }}">
             </div>
+            @error('room_no')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
             <div class="form-group">
                 <label for="">Floor</label>
-                <input type="text" name="floor" class="form-control" value="{{ $room->floor }}">
+                <input min="1" max="30" type="number" name="floor" class="form-control" value="{{ $room->floor }}">
             </div>
+            @error('floor')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
             <div class="form-group">
                 <label for="">Giá</label>
                 <input type="text" name="price" class="form-control" value="{{ $room->price }}">
             </div>
+            @error('price')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
             <div class="form-group">
                 <label for="iputName" class="text-muted d-block mb-2">Tên dịch vụ</label>
                 <div id="log">
@@ -58,12 +67,15 @@
         </div>
         <div class="col-6">
             <div class="add-product-preview-img">
-                <img src="{{ asset(''.$room->image) }}" alt="">
+                <img src="{{asset('storage/' . $room->image)}}" class="img-thumbnail">
             </div>
             <div class="form-group">
                 <label for="">Ảnh sản phẩm</label>
                 <input type="file" name="uploadfile" class="form-control">
             </div>
+            @error('uploadfile')
+                    <span class="text-danger">{{$message}}</span>
+            @enderror
         </div>
         <div class="col-12">
             <div class="form-group">

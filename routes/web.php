@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ChangePasswordController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [Controller::class, 'index'])->name('homepage');
+Route::get('login',[LoginController::class,'loginForm'])->name('login');
+Route::post('login', [LoginController::class, 'postLogin']);
+Route::get('logout',function(){
+    Auth::logout();
+    return redirect(route('login'));
+})->name('logout');
+
+Route::get('changepass',[ChangePasswordController::class,'changePassword'])->name('change');
+Route::post('changepass', [ChangePasswordController::class, 'postchangePassword']);

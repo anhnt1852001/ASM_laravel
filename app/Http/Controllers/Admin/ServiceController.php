@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ServiceFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Room_service;
@@ -30,21 +31,25 @@ class ServiceController extends Controller
         }
         return view('admin.services.list', ['services' => $services,  'searchData' => $searchData]);
     }
-    public function remove(Request $request){
-        $id = $request->id;
-        $service = Service::find($id);
-        // dump($service);
-        $service->rooms()->detach($request->service_id);
-        $service->delete();
-        return redirect(route('service.index'));
-
+    public function remove($id){
+        $model=Service::find($id);
+        if (!$model) {
+            return redirect()->back();
+        }
+        $path_icon = 'storage/' . $model->icon;
+        if (file_exists($path_icon)) {
+            unlink($path_icon);
+        }
+        Room_service::where('service_id',$id)->delete();
+        $model->delete();
+        return redirect()->back();
     }
 
 
     public function addForm(){
         return view('admin.services.add-form');
     }
-    public function saveAdd(Request $request){
+    public function saveAdd(ServiceFormRequest $request){
         $model = new Service();
         $model->fill($request->all());
         // upload ảnh
@@ -54,6 +59,8 @@ class ServiceController extends Controller
         $model->save();
         return redirect(route('service.index'));
     }
+
+
     public function editForm($id) {
         $model = Service::find($id);
         if(!$model) {
@@ -61,8 +68,12 @@ class ServiceController extends Controller
         }
         return view('admin.services.edit-form', compact('model'));
     }
-    public function saveEdit($id, Request $request){
+    public function saveEdit($id, ServiceFormRequest $request){
         $model = Service::find($id);
+        $path_icon = 'storage/' . $model->icon;
+        if (file_exists($path_icon)) {
+            unlink($path_icon);
+        }
         if(!$model){
             return redirect()->back();
         }

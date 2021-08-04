@@ -22,16 +22,25 @@
         <div class="col-6">
             <div class="form-group">
                 <label for="">Tên Room</label>
-                <input type="text" name="room_no" class="form-control">
+                <input type="text" name="room_no" class="form-control" value="{{old('room_no')}}">
             </div>
+            @error('room_no')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
             <div class="form-group">
                 <label for="">Floor</label>
-                <input type="text" name="floor" class="form-control">
+                <input  min="1" max="30" type="number" name="floor" class="form-control" value="{{old('floor')}}">
             </div>
+            @error('floor')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
             <div class="form-group">
                 <label for="">Giá</label>
-                <input type="text" name="price" class="form-control">
+                <input type="text" name="price" class="form-control" value="{{old('price')}}">
             </div>
+            @error('price')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
             <div class="form-group">
                 <label for="iputName" class="text-muted d-block mb-2">Tên dịch vụ</label>
                 <div id="log">
@@ -64,11 +73,14 @@
                 <label for="">Ảnh</label>
                 <input type="file" name="uploadfile" class="form-control">
             </div>
+            @error('uploadfile')
+                    <span class="text-danger">{{$message}}</span>
+            @enderror
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label for="">Chi tiết</label>
-                <textarea name="detail" class=form-control  rows="10"></textarea>
+                <textarea name="detail" class=form-control  rows="10">{{old('detail')}}</textarea>
             </div>
         </div>
         <div class="text-right">
