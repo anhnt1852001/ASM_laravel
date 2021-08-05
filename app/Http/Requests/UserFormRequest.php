@@ -36,7 +36,7 @@ class UserFormRequest extends FormRequest
                 'email',
                 Rule::unique('users')->ignore($this->id)
             ],
-            'password'=> 'required|min:8',
+            'password'=> 'required|min:6',
             'phone_number'=>'required|min:10|numeric'
         ];
     }
@@ -49,7 +49,7 @@ class UserFormRequest extends FormRequest
             'email.unique' => 'Email đã tồn tại',
             'email.email' => 'Sai định dạng email',
             'password.required' => 'Hãy nhập mật khẩu',
-            'password.min' => 'Password tối thiểu 8 ký tự',
+            'password.min' => 'Password tối thiểu 6 ký tự',
             'phone_number.required' => 'Hãy nhập SĐT',
             'phone_number.min' => 'SĐT tối thiểu 10 số',
             'phone_number.numeric' => 'Số điện thoại không đúng định dạng'
